@@ -1,0 +1,116 @@
+PROGRAM 1: COMPLETE DDL + DML + BASIC QUERIES
+-- Create database
+CREATE DATABASE examdb;
+USE examdb;
+
+-- Create table
+CREATE TABLE student (
+    id INT PRIMARY KEY,
+    name VARCHAR(50),
+    age INT,
+    marks INT,
+    city VARCHAR(50)
+);
+
+-- Insert data (change values as needed in exam)
+INSERT INTO student VALUES
+(1, 'Rahul', 20, 85, 'Kochi'),
+(2, 'Anjali', 21, 90, 'Trivandrum'),
+(3, 'Arjun', 22, 70, 'Kochi');
+
+-- View all data
+SELECT * FROM student;
+
+-- Select specific columns
+SELECT name, marks FROM student;
+
+-- WHERE conditions (modify condition based on question)
+SELECT * FROM student WHERE marks > 80;
+SELECT * FROM student WHERE age BETWEEN 20 AND 22;
+SELECT * FROM student WHERE city = 'Kochi';
+
+-- LIKE pattern matching
+SELECT * FROM student WHERE name LIKE 'A%';   -- starts with A
+SELECT * FROM student WHERE name LIKE '_a%';  -- second letter a
+
+-- Update data
+UPDATE student SET marks = 95 WHERE id = 1;
+
+-- Delete specific row
+DELETE FROM student WHERE id = 2;
+
+-- Delete all rows
+DELETE FROM student;
+--------------------------------------------------------------------------------------------------------------------------------------------
+PROGRAM 2: AGGREGATE + ORDER BY + GROUP BY + HAVING
+-- Create table
+CREATE TABLE orders (
+    order_id INT PRIMARY KEY,
+    customer_name VARCHAR(50),
+    amount INT,
+    city VARCHAR(50)
+);
+
+-- Insert data
+INSERT INTO orders VALUES
+(1, 'A', 200, 'Kochi'),
+(2, 'B', 500, 'Kochi'),
+(3, 'C', 300, 'Trivandrum'),
+(4, 'D', 700, 'Kochi');
+
+-- Aggregate functions
+SELECT COUNT(*) FROM orders;           -- total rows
+SELECT SUM(amount) FROM orders;        -- total amount
+SELECT AVG(amount) FROM orders;        -- average
+SELECT MAX(amount) FROM orders;        -- highest
+SELECT MIN(amount) FROM orders;        -- lowest
+
+-- DISTINCT values
+SELECT DISTINCT city FROM orders;
+
+-- ORDER BY sorting
+SELECT * FROM orders ORDER BY amount;        -- ascending
+SELECT * FROM orders ORDER BY amount DESC;   -- descending
+
+-- GROUP BY (group data)
+SELECT city, SUM(amount)
+FROM orders
+GROUP BY city;
+
+-- HAVING (filter grouped data)
+SELECT city, SUM(amount)
+FROM orders
+GROUP BY city
+HAVING SUM(amount) > 500;
+============================================================================================================================================
+PROGRAM 3: ADVANCED (SUBQUERY + EXTRA CONDITIONS)
+-- Create table
+CREATE TABLE employee (
+    id INT PRIMARY KEY,
+    name VARCHAR(50),
+    salary INT,
+    dept VARCHAR(50)
+);
+
+-- Insert data
+INSERT INTO employee VALUES
+(1, 'A', 10000, 'HR'),
+(2, 'B', 15000, 'IT'),
+(3, 'C', 8000, 'HR'),
+(4, 'D', 20000, 'IT');
+
+-- IN condition
+SELECT * FROM employee WHERE dept IN ('HR', 'IT');
+
+-- NOT IN
+SELECT * FROM employee WHERE dept NOT IN ('HR');
+
+-- Subquery (important)
+SELECT name FROM employee
+WHERE salary > (SELECT AVG(salary) FROM employee);
+
+-- Top value (highest salary)
+SELECT name FROM employee ORDER BY salary DESC LIMIT 1;
+
+-- Calculated column
+SELECT name, (salary * 12) AS yearly_salary FROM employee;
