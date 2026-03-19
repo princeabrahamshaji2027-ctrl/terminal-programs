@@ -1,0 +1,208 @@
+PROGRAM 1 :-
+import java.util.Scanner;
+
+public class MegaProgram1 {
+
+    // Method for Matrix Addition
+    static void addMatrix(int[][] a, int[][] b, int r, int c) {
+        System.out.println("Matrix Addition Result:");
+        int[][] sum = new int[r][c];
+
+        for(int i=0;i<r;i++){
+            for(int j=0;j<c;j++){
+                sum[i][j] = a[i][j] + b[i][j]; // adds elements
+                System.out.print(sum[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    // Method for Matrix Multiplication
+    static void multiplyMatrix(int[][] a, int[][] b, int r1, int c1, int c2) {
+        System.out.println("Matrix Multiplication Result:");
+        int[][] mul = new int[r1][c2];
+
+        for(int i=0;i<r1;i++){
+            for(int j=0;j<c2;j++){
+                mul[i][j] = 0;
+                for(int k=0;k<c1;k++){
+                    mul[i][j] += a[i][k] * b[k][j]; // core logic
+                }
+                System.out.print(mul[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        // ARRAY PART
+        System.out.println("Enter array size:");
+        int n = sc.nextInt();
+
+        int[] arr = new int[n];
+
+        System.out.println("Enter elements:");
+        for(int i=0;i<n;i++){
+            arr[i] = sc.nextInt(); // input array
+        }
+
+        int max = arr[0], min = arr[0];
+
+        for(int i=0;i<n;i++){
+            if(arr[i] > max) max = arr[i]; // max logic
+            if(arr[i] < min) min = arr[i]; // min logic
+        }
+
+        System.out.println("Max: " + max);
+        System.out.println("Min: " + min);
+
+        // MULTIPLICATION TABLE
+        System.out.println("Enter number for table:");
+        int num = sc.nextInt();
+
+        for(int i=1;i<=10;i++){
+            System.out.println(num + " x " + i + " = " + num*i);
+        }
+
+        // MATRIX PART
+        System.out.println("Enter rows and cols of matrix:");
+        int r = sc.nextInt();
+        int c = sc.nextInt();
+
+        int[][] m1 = new int[r][c];
+        int[][] m2 = new int[r][c];
+
+        System.out.println("Enter Matrix 1:");
+        for(int i=0;i<r;i++){
+            for(int j=0;j<c;j++){
+                m1[i][j] = sc.nextInt();
+            }
+        }
+
+        System.out.println("Enter Matrix 2:");
+        for(int i=0;i<r;i++){
+            for(int j=0;j<c;j++){
+                m2[i][j] = sc.nextInt();
+            }
+        }
+
+        addMatrix(m1, m2, r, c); // calling add
+        multiplyMatrix(m1, m2, r, c, c); // calling mul
+
+        sc.close();
+    }
+}
+
+PROGRAM 2 (Logic + Arrays + Conditions):
+import java.util.Scanner;
+
+public class MegaProgram2 {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        String[] questions = {
+            "Capital of India?",
+            "2 + 2?",
+            "Java keyword for inheritance?"
+        };
+
+        String[][] options = {
+            {"1.Delhi","2.Mumbai","3.Kolkata","4.Chennai"},
+            {"1.3","2.4","3.5","4.6"},
+            {"1.extend","2.extends","3.inherit","4.super"}
+        };
+
+        int[] answers = {1,2,2};
+        int score = 0;
+
+        for(int i=0;i<questions.length;i++){
+            System.out.println(questions[i]);
+
+            for(int j=0;j<4;j++){
+                System.out.println(options[i][j]); // print options
+            }
+
+            int user = sc.nextInt();
+
+            if(user == answers[i]){ // checking answer
+                score++;
+            }
+        }
+
+        System.out.println("Final Score: " + score);
+
+        sc.close();
+    }
+}
+
+PROGRAM 3 (Full OOP + Thread):
+// Interface
+interface Animal {
+    void sound();
+}
+
+// Abstract Class
+abstract class Shape {
+    abstract double area();
+}
+
+// Class + Inheritance
+class Dog implements Animal {
+    public void sound() {
+        System.out.println("Dog barks");
+    }
+}
+
+// Method Overloading
+class Calc {
+    void sum(int a, int b){
+        System.out.println("Sum: " + (a+b));
+    }
+
+    void sum(int a, int b, int c){
+        System.out.println("Sum: " + (a+b+c));
+    }
+}
+
+// Abstract Implementation
+class Circle extends Shape {
+    int r;
+    Circle(int r){
+        this.r = r;
+    }
+
+    double area(){
+        return 3.14 * r * r;
+    }
+}
+
+// Thread
+class MyThread extends Thread {
+    public void run(){
+        System.out.println("Thread running...");
+    }
+}
+
+public class MegaProgram3 {
+    public static void main(String[] args) {
+
+        // Interface
+        Dog d = new Dog();
+        d.sound();
+
+        // Overloading
+        Calc c = new Calc();
+        c.sum(2,3);
+        c.sum(2,3,4);
+
+        // Abstract
+        Circle obj = new Circle(5);
+        System.out.println("Area: " + obj.area());
+
+        // Thread
+        MyThread t = new MyThread();
+        t.start();
+    }
+}
