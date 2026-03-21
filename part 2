@@ -1,0 +1,646 @@
+8. Smart Home Automation
+interface Controllable {
+    void control();
+}
+
+class Device {
+    String name;
+
+    Device(String name) {
+        this.name = name;
+    }
+
+    void turnOn() {
+        System.out.println("Device turned on");
+    }
+
+    class Settings {
+        void showSettings() {
+            System.out.println("Settings opened for " + name);
+        }
+    }
+}
+
+class Light extends Device implements Controllable {
+    Light(String name) {
+        super(name);
+    }
+
+    @Override
+    void turnOn() {
+        System.out.println("Light turned on");
+    }
+
+    public void control() {
+        System.out.println("Light controlled");
+    }
+}
+
+class Fan extends Device {
+    Fan(String name) {
+        super(name);
+    }
+
+    @Override
+    void turnOn() {
+        System.out.println("Fan turned on");
+    }
+}
+
+class DeviceThread extends Thread {
+    String device;
+
+    DeviceThread(String device) {
+        this.device = device;
+    }
+
+    public void run() {
+        System.out.println(device + " is working");
+    }
+}
+
+public class SmartHomeAutomation {
+    public static void main(String[] args) {
+        String devices[] = {"Light", "Fan", "AC"};
+
+        Light l = new Light("Hall Light");
+        Fan f = new Fan("Ceiling Fan");
+
+        l.turnOn();
+        f.turnOn();
+        l.control();
+
+        Device.Settings s = l.new Settings();
+        s.showSettings();
+
+        new DeviceThread("Light").start();
+        new DeviceThread("Fan").start();
+    }
+}
+================================================================================
+9. Employee Payroll System
+interface Taxable {
+    void payTax();
+}
+
+abstract class Employee {
+    String name;
+
+    Employee(String name) {
+        this.name = name;
+    }
+
+    abstract void calculateSalary();
+
+    class Payslip {
+        void showPayslip() {
+            System.out.println("Payslip generated for " + name);
+        }
+    }
+}
+
+class Manager extends Employee implements Taxable {
+    Manager(String name) {
+        super(name);
+    }
+
+    void calculateSalary() {
+        System.out.println("Manager salary = 50000");
+    }
+
+    public void payTax() {
+        System.out.println("Manager tax paid");
+    }
+}
+
+class Developer extends Employee {
+    Developer(String name) {
+        super(name);
+    }
+
+    void calculateSalary() {
+        System.out.println("Developer salary = 40000");
+    }
+}
+
+class SalaryThread extends Thread {
+    String employee;
+
+    SalaryThread(String employee) {
+        this.employee = employee;
+    }
+
+    public void run() {
+        System.out.println(employee + " received salary");
+    }
+}
+
+public class EmployeePayrollSystem {
+    public static void main(String[] args) {
+        String employees[] = {"Arun", "Vimal", "Nisha"};
+
+        Manager m = new Manager("Arun");
+        Developer d = new Developer("Vimal");
+
+        m.calculateSalary();
+        d.calculateSalary();
+        m.payTax();
+
+        Employee.Payslip p = m.new Payslip();
+        p.showPayslip();
+
+        new SalaryThread("Arun").start();
+        new SalaryThread("Vimal").start();
+    }
+}
+================================================================================
+10. Railway Catering System
+interface Refundable {
+    void refund();
+}
+
+class Train {
+    String name;
+
+    Train(String name) {
+        this.name = name;
+    }
+
+    void getSchedule() {
+        System.out.println("Train schedule");
+    }
+
+    class Catering {
+        void orderFood() {
+            System.out.println("Food ordered in " + name);
+        }
+    }
+}
+
+class ExpressTrain extends Train implements Refundable {
+    ExpressTrain(String name) {
+        super(name);
+    }
+
+    @Override
+    void getSchedule() {
+        System.out.println("Express train schedule");
+    }
+
+    public void refund() {
+        System.out.println("Refund processed");
+    }
+}
+
+class LocalTrain extends Train {
+    LocalTrain(String name) {
+        super(name);
+    }
+
+    @Override
+    void getSchedule() {
+        System.out.println("Local train schedule");
+    }
+}
+
+class FoodThread extends Thread {
+    String passenger;
+
+    FoodThread(String passenger) {
+        this.passenger = passenger;
+    }
+
+    public void run() {
+        System.out.println(passenger + " ordered food");
+    }
+}
+
+public class RailwayCateringSystem {
+    public static void main(String[] args) {
+        String passengers[] = {"Raju", "Maya", "Neeraj"};
+
+        ExpressTrain e = new ExpressTrain("Rajdhani");
+        LocalTrain l = new LocalTrain("Passenger");
+
+        e.getSchedule();
+        l.getSchedule();
+        e.refund();
+
+        Train.Catering c = e.new Catering();
+        c.orderFood();
+
+        new FoodThread("Raju").start();
+        new FoodThread("Maya").start();
+    }
+}
+================================================================================
+11. Insurance Claim System
+interface Payable {
+    void payAmount();
+}
+
+class Policy {
+    String id;
+
+    Policy(String id) {
+        this.id = id;
+    }
+
+    void processClaim() {
+        System.out.println("Claim processed");
+    }
+
+    static class Agent {
+        void showAgent() {
+            System.out.println("Agent assigned");
+        }
+    }
+}
+
+class HealthPolicy extends Policy implements Payable {
+    HealthPolicy(String id) {
+        super(id);
+    }
+
+    @Override
+    void processClaim() {
+        System.out.println("Health claim processed");
+    }
+
+    public void payAmount() {
+        System.out.println("Health amount paid");
+    }
+}
+
+class CarPolicy extends Policy {
+    CarPolicy(String id) {
+        super(id);
+    }
+
+    @Override
+    void processClaim() {
+        System.out.println("Car claim processed");
+    }
+}
+
+class ClaimThread extends Thread {
+    String customer;
+
+    ClaimThread(String customer) {
+        this.customer = customer;
+    }
+
+    public void run() {
+        System.out.println(customer + " filed a claim");
+    }
+}
+
+public class InsuranceClaimSystem {
+    public static void main(String[] args) {
+        String ids[] = {"P101", "P102", "P103"};
+
+        HealthPolicy h = new HealthPolicy("P101");
+        CarPolicy c = new CarPolicy("P102");
+
+        h.processClaim();
+        c.processClaim();
+        h.payAmount();
+
+        Policy.Agent a = new Policy.Agent();
+        a.showAgent();
+
+        new ClaimThread("Customer1").start();
+        new ClaimThread("Customer2").start();
+    }
+}
+================================================================================
+12. Gaming Application
+interface Playable {
+    void play();
+}
+
+class Game {
+    String name;
+
+    Game(String name) {
+        this.name = name;
+    }
+
+    void calculateScore() {
+        System.out.println("Game score");
+    }
+
+    class Leaderboard {
+        void showBoard() {
+            System.out.println("Leaderboard shown for " + name);
+        }
+    }
+}
+
+class CricketGame extends Game implements Playable {
+    CricketGame(String name) {
+        super(name);
+    }
+
+    @Override
+    void calculateScore() {
+        System.out.println("Cricket score = 150");
+    }
+
+    public void play() {
+        System.out.println("Cricket game started");
+    }
+}
+
+class FootballGame extends Game {
+    FootballGame(String name) {
+        super(name);
+    }
+
+    @Override
+    void calculateScore() {
+        System.out.println("Football score = 3");
+    }
+}
+
+class PlayerThread extends Thread {
+    String player;
+
+    PlayerThread(String player) {
+        this.player = player;
+    }
+
+    public void run() {
+        System.out.println(player + " is playing");
+    }
+}
+
+public class GamingApplication {
+    public static void main(String[] args) {
+        String players[] = {"A", "B", "C"};
+
+        CricketGame c = new CricketGame("Cricket");
+        FootballGame f = new FootballGame("Football");
+
+        c.calculateScore();
+        f.calculateScore();
+        c.play();
+
+        Game.Leaderboard l = c.new Leaderboard();
+        l.showBoard();
+
+        new PlayerThread("A").start();
+        new PlayerThread("B").start();
+    }
+}
+================================================================================
+13. Online Learning Platform
+interface Evaluatable {
+    void evaluatePerformance();
+}
+
+class Course {
+    String name;
+
+    Course(String name) {
+        this.name = name;
+    }
+
+    void getDuration() {
+        System.out.println("Course duration");
+    }
+
+    class Assignment {
+        void submit() {
+            System.out.println("Assignment submitted for " + name);
+        }
+    }
+}
+
+class OnlineCourse extends Course implements Evaluatable {
+    OnlineCourse(String name) {
+        super(name);
+    }
+
+    @Override
+    void getDuration() {
+        System.out.println("Online course duration = 3 months");
+    }
+
+    public void evaluatePerformance() {
+        System.out.println("Online course evaluated");
+    }
+}
+
+class OfflineCourse extends Course {
+    OfflineCourse(String name) {
+        super(name);
+    }
+
+    @Override
+    void getDuration() {
+        System.out.println("Offline course duration = 6 months");
+    }
+}
+
+class StudentThread extends Thread {
+    String student;
+
+    StudentThread(String student) {
+        this.student = student;
+    }
+
+    public void run() {
+        System.out.println(student + " submitted assignment");
+    }
+}
+
+public class OnlineLearningPlatform {
+    public static void main(String[] args) {
+        String students[] = {"Anu", "Riya", "Sam"};
+
+        OnlineCourse o = new OnlineCourse("Java");
+        OfflineCourse f = new OfflineCourse("Python");
+
+        o.getDuration();
+        f.getDuration();
+        o.evaluatePerformance();
+
+        Course.Assignment a = o.new Assignment();
+        a.submit();
+
+        new StudentThread("Anu").start();
+        new StudentThread("Riya").start();
+    }
+}
+================================================================================
+14. Retail Billing System
+interface Discountable {
+    void giveDiscount();
+}
+
+class Bill {
+    String name;
+
+    Bill(String name) {
+        this.name = name;
+    }
+
+    void calculateTotal() {
+        System.out.println("Total bill");
+    }
+
+    class Receipt {
+        void printReceipt() {
+            System.out.println("Receipt printed for " + name);
+        }
+    }
+}
+
+class GroceryBill extends Bill implements Discountable {
+    GroceryBill(String name) {
+        super(name);
+    }
+
+    @Override
+    void calculateTotal() {
+        System.out.println("Grocery total = 500");
+    }
+
+    public void giveDiscount() {
+        System.out.println("Grocery discount given");
+    }
+}
+
+class ElectronicsBill extends Bill {
+    ElectronicsBill(String name) {
+        super(name);
+    }
+
+    @Override
+    void calculateTotal() {
+        System.out.println("Electronics total = 20000");
+    }
+}
+
+class BillThread extends Thread {
+    String customer;
+
+    BillThread(String customer) {
+        this.customer = customer;
+    }
+
+    public void run() {
+        System.out.println(customer + " generated bill");
+    }
+}
+
+public class RetailBillingSystem {
+    public static void main(String[] args) {
+        String items[] = {"Rice", "TV", "Phone"};
+
+        GroceryBill g = new GroceryBill("Grocery");
+        ElectronicsBill e = new ElectronicsBill("Electronics");
+
+        g.calculateTotal();
+        e.calculateTotal();
+        g.giveDiscount();
+
+        Bill.Receipt r = g.new Receipt();
+        r.printReceipt();
+
+        new BillThread("Customer1").start();
+        new BillThread("Customer2").start();
+    }
+}
+================================================================================
+15. Social Media Platform
+interface Shareable {
+    void sharePost();
+}
+
+class User {
+    String name;
+
+    User(String name) {
+        this.name = name;
+    }
+
+    void moderatePost() {
+        System.out.println("Post moderated");
+    }
+
+    class Comment {
+        void addComment() {
+            System.out.println("Comment added by " + name);
+        }
+    }
+}
+
+class Admin extends User implements Shareable {
+    Admin(String name) {
+        super(name);
+    }
+
+    @Override
+    void moderatePost() {
+        System.out.println("Admin moderated post");
+    }
+
+    public void sharePost() {
+        System.out.println("Post shared");
+    }
+}
+
+class Member extends User {
+    Member(String name) {
+        super(name);
+    }
+
+    @Override
+    void moderatePost() {
+        System.out.println("Member created post");
+    }
+}
+
+class PostThread extends Thread {
+    String user;
+
+    PostThread(String user) {
+        this.user = user;
+    }
+
+    public void run() {
+        System.out.println(user + " posted simultaneously");
+    }
+}
+
+public class SocialMediaPlatform {
+    public static void main(String[] args) {
+        String posts[] = {"Post1", "Post2", "Post3"};
+
+        Admin a = new Admin("Admin1");
+        Member m = new Member("Member1");
+
+        a.moderatePost();
+        m.moderatePost();
+        a.sharePost();
+
+        User.Comment c = a.new Comment();
+        c.addComment();
+
+        new PostThread("Admin1").start();
+        new PostThread("Member1").start();
+    }
+}
+================================================================================
+
+
+
+
+
+
+
+
+
+
