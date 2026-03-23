@@ -1,6 +1,6 @@
 8. Smart Home Automation
 interface Controllable {
-    void control();
+    void controlDevice();
 }
 
 class Device {
@@ -13,12 +13,6 @@ class Device {
     void turnOn() {
         System.out.println("Device turned on");
     }
-
-    class Settings {
-        void showSettings() {
-            System.out.println("Settings opened for " + name);
-        }
-    }
 }
 
 class Light extends Device implements Controllable {
@@ -26,24 +20,32 @@ class Light extends Device implements Controllable {
         super(name);
     }
 
-    @Override
     void turnOn() {
         System.out.println("Light turned on");
     }
 
-    public void control() {
+    public void controlDevice() {
         System.out.println("Light controlled");
     }
 }
 
-class Fan extends Device {
+class Fan extends Device implements Controllable {
     Fan(String name) {
         super(name);
     }
 
-    @Override
     void turnOn() {
         System.out.println("Fan turned on");
+    }
+
+    public void controlDevice() {
+        System.out.println("Fan controlled");
+    }
+}
+
+class Settings {
+    void showSettings() {
+        System.out.println("Device settings shown");
     }
 }
 
@@ -55,26 +57,34 @@ class DeviceThread extends Thread {
     }
 
     public void run() {
-        System.out.println(device + " is working");
+        System.out.println(device + " is being controlled");
     }
 }
 
 public class SmartHomeAutomation {
     public static void main(String[] args) {
-        String devices[] = {"Light", "Fan", "AC"};
-
-        Light l = new Light("Hall Light");
+        Light l = new Light("Tube Light");
         Fan f = new Fan("Ceiling Fan");
 
         l.turnOn();
         f.turnOn();
-        l.control();
 
-        Device.Settings s = l.new Settings();
+        l.controlDevice();
+        f.controlDevice();
+
+        String devices[] = {"Tube Light", "Ceiling Fan", "Bulb"};
+        for (int i = 0; i < devices.length; i++) {
+            System.out.println(devices[i]);
+        }
+
+        Settings s = new Settings();
         s.showSettings();
 
-        new DeviceThread("Light").start();
-        new DeviceThread("Fan").start();
+        DeviceThread t1 = new DeviceThread("Light");
+        DeviceThread t2 = new DeviceThread("Fan");
+
+        t1.start();
+        t2.start();
     }
 }
 ================================================================================
@@ -91,12 +101,6 @@ abstract class Employee {
     }
 
     abstract void calculateSalary();
-
-    class Payslip {
-        void showPayslip() {
-            System.out.println("Payslip generated for " + name);
-        }
-    }
 }
 
 class Manager extends Employee implements Taxable {
@@ -113,7 +117,7 @@ class Manager extends Employee implements Taxable {
     }
 }
 
-class Developer extends Employee {
+class Developer extends Employee implements Taxable {
     Developer(String name) {
         super(name);
     }
@@ -121,36 +125,54 @@ class Developer extends Employee {
     void calculateSalary() {
         System.out.println("Developer salary = 40000");
     }
+
+    public void payTax() {
+        System.out.println("Developer tax paid");
+    }
+}
+
+class Payslip {
+    void showPayslip() {
+        System.out.println("Payslip generated");
+    }
 }
 
 class SalaryThread extends Thread {
-    String employee;
+    String emp;
 
-    SalaryThread(String employee) {
-        this.employee = employee;
+    SalaryThread(String emp) {
+        this.emp = emp;
     }
 
     public void run() {
-        System.out.println(employee + " received salary");
+        System.out.println(emp + " received salary");
     }
 }
 
 public class EmployeePayrollSystem {
     public static void main(String[] args) {
-        String employees[] = {"Arun", "Vimal", "Nisha"};
-
         Manager m = new Manager("Arun");
-        Developer d = new Developer("Vimal");
+        Developer d = new Developer("Rahul");
 
         m.calculateSalary();
         d.calculateSalary();
-        m.payTax();
 
-        Employee.Payslip p = m.new Payslip();
+        m.payTax();
+        d.payTax();
+
+        String employees[] = {"Arun", "Rahul", "Maya"};
+        for (int i = 0; i < employees.length; i++) {
+            System.out.println(employees[i]);
+        }
+
+        Payslip p = new Payslip();
         p.showPayslip();
 
-        new SalaryThread("Arun").start();
-        new SalaryThread("Vimal").start();
+        SalaryThread t1 = new SalaryThread("Employee1");
+        SalaryThread t2 = new SalaryThread("Employee2");
+
+        t1.start();
+        t2.start();
     }
 }
 ================================================================================
@@ -160,46 +182,48 @@ interface Refundable {
 }
 
 class Train {
-    String name;
+    String passengerName;
 
-    Train(String name) {
-        this.name = name;
+    Train(String passengerName) {
+        this.passengerName = passengerName;
     }
 
     void getSchedule() {
         System.out.println("Train schedule");
     }
-
-    class Catering {
-        void orderFood() {
-            System.out.println("Food ordered in " + name);
-        }
-    }
 }
 
 class ExpressTrain extends Train implements Refundable {
-    ExpressTrain(String name) {
-        super(name);
+    ExpressTrain(String passengerName) {
+        super(passengerName);
     }
 
-    @Override
     void getSchedule() {
-        System.out.println("Express train schedule");
+        System.out.println("Express train schedule = 10 AM");
     }
 
     public void refund() {
-        System.out.println("Refund processed");
+        System.out.println("Express train refund done");
     }
 }
 
-class LocalTrain extends Train {
-    LocalTrain(String name) {
-        super(name);
+class LocalTrain extends Train implements Refundable {
+    LocalTrain(String passengerName) {
+        super(passengerName);
     }
 
-    @Override
     void getSchedule() {
-        System.out.println("Local train schedule");
+        System.out.println("Local train schedule = 2 PM");
+    }
+
+    public void refund() {
+        System.out.println("Local train refund done");
+    }
+}
+
+class Catering {
+    void orderFood() {
+        System.out.println("Food ordered");
     }
 }
 
@@ -217,69 +241,79 @@ class FoodThread extends Thread {
 
 public class RailwayCateringSystem {
     public static void main(String[] args) {
-        String passengers[] = {"Raju", "Maya", "Neeraj"};
-
-        ExpressTrain e = new ExpressTrain("Rajdhani");
-        LocalTrain l = new LocalTrain("Passenger");
+        ExpressTrain e = new ExpressTrain("Arun");
+        LocalTrain l = new LocalTrain("Rahul");
 
         e.getSchedule();
         l.getSchedule();
-        e.refund();
 
-        Train.Catering c = e.new Catering();
+        e.refund();
+        l.refund();
+
+        String passengers[] = {"Arun", "Rahul", "Maya"};
+        for (int i = 0; i < passengers.length; i++) {
+            System.out.println(passengers[i]);
+        }
+
+        Catering c = new Catering();
         c.orderFood();
 
-        new FoodThread("Raju").start();
-        new FoodThread("Maya").start();
+        FoodThread t1 = new FoodThread("Passenger1");
+        FoodThread t2 = new FoodThread("Passenger2");
+
+        t1.start();
+        t2.start();
     }
 }
 ================================================================================
 11. Insurance Claim System
 interface Payable {
-    void payAmount();
+    void makePayment();
 }
 
 class Policy {
-    String id;
+    String policyId;
 
-    Policy(String id) {
-        this.id = id;
+    Policy(String policyId) {
+        this.policyId = policyId;
     }
 
     void processClaim() {
         System.out.println("Claim processed");
     }
-
-    static class Agent {
-        void showAgent() {
-            System.out.println("Agent assigned");
-        }
-    }
 }
 
 class HealthPolicy extends Policy implements Payable {
-    HealthPolicy(String id) {
-        super(id);
+    HealthPolicy(String policyId) {
+        super(policyId);
     }
 
-    @Override
     void processClaim() {
-        System.out.println("Health claim processed");
+        System.out.println("Health policy claim processed");
     }
 
-    public void payAmount() {
-        System.out.println("Health amount paid");
+    public void makePayment() {
+        System.out.println("Health claim payment made");
     }
 }
 
-class CarPolicy extends Policy {
-    CarPolicy(String id) {
-        super(id);
+class CarPolicy extends Policy implements Payable {
+    CarPolicy(String policyId) {
+        super(policyId);
     }
 
-    @Override
     void processClaim() {
-        System.out.println("Car claim processed");
+        System.out.println("Car policy claim processed");
+    }
+
+    public void makePayment() {
+        System.out.println("Car claim payment made");
+    }
+}
+
+class Agent {
+    void showAgent() {
+        System.out.println("Agent details shown");
     }
 }
 
@@ -291,82 +325,92 @@ class ClaimThread extends Thread {
     }
 
     public void run() {
-        System.out.println(customer + " filed a claim");
+        System.out.println(customer + " filed claim");
     }
 }
 
 public class InsuranceClaimSystem {
     public static void main(String[] args) {
-        String ids[] = {"P101", "P102", "P103"};
-
-        HealthPolicy h = new HealthPolicy("P101");
-        CarPolicy c = new CarPolicy("P102");
+        HealthPolicy h = new HealthPolicy("HP101");
+        CarPolicy c = new CarPolicy("CP202");
 
         h.processClaim();
         c.processClaim();
-        h.payAmount();
 
-        Policy.Agent a = new Policy.Agent();
+        h.makePayment();
+        c.makePayment();
+
+        String policyIds[] = {"HP101", "CP202", "HP303"};
+        for (int i = 0; i < policyIds.length; i++) {
+            System.out.println(policyIds[i]);
+        }
+
+        Agent a = new Agent();
         a.showAgent();
 
-        new ClaimThread("Customer1").start();
-        new ClaimThread("Customer2").start();
+        ClaimThread t1 = new ClaimThread("Customer1");
+        ClaimThread t2 = new ClaimThread("Customer2");
+
+        t1.start();
+        t2.start();
     }
 }
 ================================================================================
 12. Gaming Application
 interface Playable {
-    void play();
+    void playGame();
 }
 
 class Game {
-    String name;
+    String playerName;
 
-    Game(String name) {
-        this.name = name;
+    Game(String playerName) {
+        this.playerName = playerName;
     }
 
     void calculateScore() {
         System.out.println("Game score");
     }
-
-    class Leaderboard {
-        void showBoard() {
-            System.out.println("Leaderboard shown for " + name);
-        }
-    }
 }
 
 class CricketGame extends Game implements Playable {
-    CricketGame(String name) {
-        super(name);
+    CricketGame(String playerName) {
+        super(playerName);
     }
 
-    @Override
     void calculateScore() {
-        System.out.println("Cricket score = 150");
+        System.out.println("Cricket score = 100");
     }
 
-    public void play() {
-        System.out.println("Cricket game started");
+    public void playGame() {
+        System.out.println("Playing cricket");
     }
 }
 
-class FootballGame extends Game {
-    FootballGame(String name) {
-        super(name);
+class FootballGame extends Game implements Playable {
+    FootballGame(String playerName) {
+        super(playerName);
     }
 
-    @Override
     void calculateScore() {
-        System.out.println("Football score = 3");
+        System.out.println("Football score = 2 goals");
+    }
+
+    public void playGame() {
+        System.out.println("Playing football");
     }
 }
 
-class PlayerThread extends Thread {
+class Leaderboard {
+    void showLeaderboard() {
+        System.out.println("Leaderboard displayed");
+    }
+}
+
+class GameThread extends Thread {
     String player;
 
-    PlayerThread(String player) {
+    GameThread(String player) {
         this.player = player;
     }
 
@@ -377,20 +421,28 @@ class PlayerThread extends Thread {
 
 public class GamingApplication {
     public static void main(String[] args) {
-        String players[] = {"A", "B", "C"};
-
-        CricketGame c = new CricketGame("Cricket");
-        FootballGame f = new FootballGame("Football");
+        CricketGame c = new CricketGame("Arun");
+        FootballGame f = new FootballGame("Rahul");
 
         c.calculateScore();
         f.calculateScore();
-        c.play();
 
-        Game.Leaderboard l = c.new Leaderboard();
-        l.showBoard();
+        c.playGame();
+        f.playGame();
 
-        new PlayerThread("A").start();
-        new PlayerThread("B").start();
+        String players[] = {"Arun", "Rahul", "Maya"};
+        for (int i = 0; i < players.length; i++) {
+            System.out.println(players[i]);
+        }
+
+        Leaderboard l = new Leaderboard();
+        l.showLeaderboard();
+
+        GameThread t1 = new GameThread("Player1");
+        GameThread t2 = new GameThread("Player2");
+
+        t1.start();
+        t2.start();
     }
 }
 ================================================================================
@@ -400,53 +452,55 @@ interface Evaluatable {
 }
 
 class Course {
-    String name;
+    String studentName;
 
-    Course(String name) {
-        this.name = name;
+    Course(String studentName) {
+        this.studentName = studentName;
     }
 
     void getDuration() {
         System.out.println("Course duration");
     }
-
-    class Assignment {
-        void submit() {
-            System.out.println("Assignment submitted for " + name);
-        }
-    }
 }
 
 class OnlineCourse extends Course implements Evaluatable {
-    OnlineCourse(String name) {
-        super(name);
+    OnlineCourse(String studentName) {
+        super(studentName);
     }
 
-    @Override
     void getDuration() {
         System.out.println("Online course duration = 3 months");
     }
 
     public void evaluatePerformance() {
-        System.out.println("Online course evaluated");
+        System.out.println("Online course performance evaluated");
     }
 }
 
-class OfflineCourse extends Course {
-    OfflineCourse(String name) {
-        super(name);
+class OfflineCourse extends Course implements Evaluatable {
+    OfflineCourse(String studentName) {
+        super(studentName);
     }
 
-    @Override
     void getDuration() {
         System.out.println("Offline course duration = 6 months");
     }
+
+    public void evaluatePerformance() {
+        System.out.println("Offline course performance evaluated");
+    }
 }
 
-class StudentThread extends Thread {
+class Assignment {
+    void submitAssignment() {
+        System.out.println("Assignment submitted");
+    }
+}
+
+class AssignmentThread extends Thread {
     String student;
 
-    StudentThread(String student) {
+    AssignmentThread(String student) {
         this.student = student;
     }
 
@@ -457,20 +511,28 @@ class StudentThread extends Thread {
 
 public class OnlineLearningPlatform {
     public static void main(String[] args) {
-        String students[] = {"Anu", "Riya", "Sam"};
-
-        OnlineCourse o = new OnlineCourse("Java");
-        OfflineCourse f = new OfflineCourse("Python");
+        OnlineCourse o = new OnlineCourse("Arun");
+        OfflineCourse f = new OfflineCourse("Rahul");
 
         o.getDuration();
         f.getDuration();
+
         o.evaluatePerformance();
+        f.evaluatePerformance();
 
-        Course.Assignment a = o.new Assignment();
-        a.submit();
+        String students[] = {"Arun", "Rahul", "Maya"};
+        for (int i = 0; i < students.length; i++) {
+            System.out.println(students[i]);
+        }
 
-        new StudentThread("Anu").start();
-        new StudentThread("Riya").start();
+        Assignment a = new Assignment();
+        a.submitAssignment();
+
+        AssignmentThread t1 = new AssignmentThread("Student1");
+        AssignmentThread t2 = new AssignmentThread("Student2");
+
+        t1.start();
+        t2.start();
     }
 }
 ================================================================================
@@ -480,46 +542,48 @@ interface Discountable {
 }
 
 class Bill {
-    String name;
+    String itemName;
 
-    Bill(String name) {
-        this.name = name;
+    Bill(String itemName) {
+        this.itemName = itemName;
     }
 
     void calculateTotal() {
-        System.out.println("Total bill");
-    }
-
-    class Receipt {
-        void printReceipt() {
-            System.out.println("Receipt printed for " + name);
-        }
+        System.out.println("Bill total");
     }
 }
 
 class GroceryBill extends Bill implements Discountable {
-    GroceryBill(String name) {
-        super(name);
+    GroceryBill(String itemName) {
+        super(itemName);
     }
 
-    @Override
     void calculateTotal() {
         System.out.println("Grocery total = 500");
     }
 
     public void giveDiscount() {
-        System.out.println("Grocery discount given");
+        System.out.println("Grocery discount applied");
     }
 }
 
-class ElectronicsBill extends Bill {
-    ElectronicsBill(String name) {
-        super(name);
+class ElectronicsBill extends Bill implements Discountable {
+    ElectronicsBill(String itemName) {
+        super(itemName);
     }
 
-    @Override
     void calculateTotal() {
-        System.out.println("Electronics total = 20000");
+        System.out.println("Electronics total = 15000");
+    }
+
+    public void giveDiscount() {
+        System.out.println("Electronics discount applied");
+    }
+}
+
+class Receipt {
+    void printReceipt() {
+        System.out.println("Receipt printed");
     }
 }
 
@@ -531,26 +595,34 @@ class BillThread extends Thread {
     }
 
     public void run() {
-        System.out.println(customer + " generated bill");
+        System.out.println(customer + " bill generated");
     }
 }
 
 public class RetailBillingSystem {
     public static void main(String[] args) {
-        String items[] = {"Rice", "TV", "Phone"};
-
-        GroceryBill g = new GroceryBill("Grocery");
-        ElectronicsBill e = new ElectronicsBill("Electronics");
+        GroceryBill g = new GroceryBill("Rice");
+        ElectronicsBill e = new ElectronicsBill("TV");
 
         g.calculateTotal();
         e.calculateTotal();
-        g.giveDiscount();
 
-        Bill.Receipt r = g.new Receipt();
+        g.giveDiscount();
+        e.giveDiscount();
+
+        String items[] = {"Rice", "TV", "Soap"};
+        for (int i = 0; i < items.length; i++) {
+            System.out.println(items[i]);
+        }
+
+        Receipt r = new Receipt();
         r.printReceipt();
 
-        new BillThread("Customer1").start();
-        new BillThread("Customer2").start();
+        BillThread t1 = new BillThread("Customer1");
+        BillThread t2 = new BillThread("Customer2");
+
+        t1.start();
+        t2.start();
     }
 }
 ================================================================================
@@ -567,13 +639,7 @@ class User {
     }
 
     void moderatePost() {
-        System.out.println("Post moderated");
-    }
-
-    class Comment {
-        void addComment() {
-            System.out.println("Comment added by " + name);
-        }
+        System.out.println("User moderates post");
     }
 }
 
@@ -582,24 +648,32 @@ class Admin extends User implements Shareable {
         super(name);
     }
 
-    @Override
     void moderatePost() {
-        System.out.println("Admin moderated post");
+        System.out.println("Admin moderates post");
     }
 
     public void sharePost() {
-        System.out.println("Post shared");
+        System.out.println("Admin shared post");
     }
 }
 
-class Member extends User {
+class Member extends User implements Shareable {
     Member(String name) {
         super(name);
     }
 
-    @Override
     void moderatePost() {
-        System.out.println("Member created post");
+        System.out.println("Member moderates post");
+    }
+
+    public void sharePost() {
+        System.out.println("Member shared post");
+    }
+}
+
+class Comment {
+    void addComment() {
+        System.out.println("Comment added");
     }
 }
 
@@ -611,26 +685,38 @@ class PostThread extends Thread {
     }
 
     public void run() {
-        System.out.println(user + " posted simultaneously");
+        System.out.println(user + " posted something");
     }
 }
 
 public class SocialMediaPlatform {
     public static void main(String[] args) {
-        String posts[] = {"Post1", "Post2", "Post3"};
-
-        Admin a = new Admin("Admin1");
-        Member m = new Member("Member1");
+        Admin a = new Admin("Arun");
+        Member m = new Member("Rahul");
 
         a.moderatePost();
         m.moderatePost();
-        a.sharePost();
 
-        User.Comment c = a.new Comment();
+        a.sharePost();
+        m.sharePost();
+
+        String posts[] = {"Java Tips", "News Update", "Funny Video"};
+        String search = "News Update";
+
+        for (int i = 0; i < posts.length; i++) {
+            if (posts[i].equals(search)) {
+                System.out.println(search + " found");
+            }
+        }
+
+        Comment c = new Comment();
         c.addComment();
 
-        new PostThread("Admin1").start();
-        new PostThread("Member1").start();
+        PostThread t1 = new PostThread("User1");
+        PostThread t2 = new PostThread("User2");
+
+        t1.start();
+        t2.start();
     }
 }
 ================================================================================
