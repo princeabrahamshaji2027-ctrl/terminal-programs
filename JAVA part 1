@@ -4,29 +4,22 @@ interface Schedulable {
 }
 
 class Vehicle {
-    String name;
+    String passengerName;
 
-    Vehicle(String name) {
-        this.name = name;
+    Vehicle(String passengerName) {
+        this.passengerName = passengerName;
     }
 
     void calculateFare() {
         System.out.println("Vehicle fare");
     }
-
-    class Ticket {
-        void showTicket() {
-            System.out.println("Ticket booked for " + name);
-        }
-    }
 }
 
 class Bus extends Vehicle implements Schedulable {
-    Bus(String name) {
-        super(name);
+    Bus(String passengerName) {
+        super(passengerName);
     }
 
-    @Override
     void calculateFare() {
         System.out.println("Bus fare = 50");
     }
@@ -36,56 +29,73 @@ class Bus extends Vehicle implements Schedulable {
     }
 }
 
-class Train extends Vehicle {
-    Train(String name) {
-        super(name);
+class Train extends Vehicle implements Schedulable {
+    Train(String passengerName) {
+        super(passengerName);
     }
 
-    @Override
     void calculateFare() {
         System.out.println("Train fare = 100");
+    }
+
+    public void setSchedule() {
+        System.out.println("Train schedule set");
+    }
+}
+
+class Ticket {
+    void printTicket() {
+        System.out.println("Ticket booked");
     }
 }
 
 class BookingThread extends Thread {
-    String passenger;
+    String name;
 
-    BookingThread(String passenger) {
-        this.passenger = passenger;
+    BookingThread(String name) {
+        this.name = name;
     }
 
     public void run() {
-        System.out.println(passenger + " booked ticket");
+        System.out.println(name + " booked ticket");
     }
 }
 
 public class SmartTransportSystem {
     public static void main(String[] args) {
-        String passengers[] = {"Aju", "Binu", "Ciya"};
-
-        for (String p : passengers) {
-            System.out.println(p);
-        }
-
-        String search = "Binu";
-        for (String p : passengers) {
-            if (p.equals(search)) {
-                System.out.println(search + " found");
-            }
-        }
-
-        Bus b = new Bus("City Bus");
-        Train t = new Train("Express Train");
+        Bus b = new Bus("Arun");
+        Train t = new Train("Rahul");
 
         b.calculateFare();
         t.calculateFare();
+
         b.setSchedule();
+        t.setSchedule();
 
-        Vehicle.Ticket tk = b.new Ticket();
-        tk.showTicket();
+        String passengers[] = {"Arun", "Rahul", "Maya"};
+        String search = "Rahul";
+        int found = 0;
 
-        new BookingThread("Aju").start();
-        new BookingThread("Binu").start();
+        for (int i = 0; i < passengers.length; i++) {
+            if (passengers[i].equals(search)) {
+                found = 1;
+                break;
+            }
+        }
+
+        if (found == 1)
+            System.out.println(search + " found");
+        else
+            System.out.println(search + " not found");
+
+        Ticket tk = new Ticket();
+        tk.printTicket();
+
+        BookingThread t1 = new BookingThread("Passenger1");
+        BookingThread t2 = new BookingThread("Passenger2");
+
+        t1.start();
+        t2.start();
     }
 }
 ================================================================================
@@ -102,13 +112,7 @@ class Person {
     }
 
     void getDetails() {
-        System.out.println("Person: " + name);
-    }
-
-    static class Department {
-        void showDept() {
-            System.out.println("Department: Computer Science");
-        }
+        System.out.println("Person name: " + name);
     }
 }
 
@@ -117,9 +121,8 @@ class Student extends Person implements Evaluatable {
         super(name);
     }
 
-    @Override
     void getDetails() {
-        System.out.println("Student: " + name);
+        System.out.println("Student name: " + name);
     }
 
     public void evaluatePerformance() {
@@ -127,52 +130,68 @@ class Student extends Person implements Evaluatable {
     }
 }
 
-class Faculty extends Person {
+class Faculty extends Person implements Evaluatable {
     Faculty(String name) {
         super(name);
     }
 
-    @Override
     void getDetails() {
-        System.out.println("Faculty: " + name);
+        System.out.println("Faculty name: " + name);
+    }
+
+    public void evaluatePerformance() {
+        System.out.println("Faculty performance evaluated");
+    }
+}
+
+class Department {
+    void showDepartment() {
+        System.out.println("Department shown");
     }
 }
 
 class SubmitThread extends Thread {
-    String student;
+    String name;
 
-    SubmitThread(String student) {
-        this.student = student;
+    SubmitThread(String name) {
+        this.name = name;
     }
 
     public void run() {
-        System.out.println(student + " submitted assignment");
+        System.out.println(name + " submitted assignment");
     }
 }
 
 public class UniversityEvaluationSystem {
     public static void main(String[] args) {
-        int marks[] = {80, 70, 90};
-        int sum = 0;
-
-        for (int m : marks) {
-            sum += m;
-        }
-
-        System.out.println("Average = " + (sum / marks.length));
-
-        Student s = new Student("Arun");
+        Student s = new Student("Anu");
         Faculty f = new Faculty("Meera");
 
         s.getDetails();
         f.getDetails();
+
         s.evaluatePerformance();
+        f.evaluatePerformance();
 
-        Person.Department d = new Person.Department();
-        d.showDept();
+        int marks[] = {80, 75, 90};
+        int sum = 0;
+        double avg;
 
-        new SubmitThread("Arun").start();
-        new SubmitThread("Niya").start();
+        for (int i = 0; i < marks.length; i++) {
+            sum = sum + marks[i];
+        }
+
+        avg = sum / 3.0;
+        System.out.println("Average marks = " + avg);
+
+        Department d = new Department();
+        d.showDepartment();
+
+        SubmitThread t1 = new SubmitThread("Student1");
+        SubmitThread t2 = new SubmitThread("Student2");
+
+        t1.start();
+        t2.start();
     }
 }
 ================================================================================
@@ -189,13 +208,7 @@ class Product {
     }
 
     void applyDiscount() {
-        System.out.println("General discount");
-    }
-
-    class Review {
-        void showReview() {
-            System.out.println("Review added for " + name);
-        }
+        System.out.println("Product discount");
     }
 }
 
@@ -204,7 +217,6 @@ class Electronics extends Product implements Shippable {
         super(name);
     }
 
-    @Override
     void applyDiscount() {
         System.out.println("Electronics discount = 10%");
     }
@@ -214,14 +226,23 @@ class Electronics extends Product implements Shippable {
     }
 }
 
-class Clothing extends Product {
+class Clothing extends Product implements Shippable {
     Clothing(String name) {
         super(name);
     }
 
-    @Override
     void applyDiscount() {
         System.out.println("Clothing discount = 20%");
+    }
+
+    public void shipProduct() {
+        System.out.println("Clothing shipped");
+    }
+}
+
+class Review {
+    void showReview() {
+        System.out.println("Product review added");
     }
 }
 
@@ -233,37 +254,38 @@ class CartThread extends Thread {
     }
 
     public void run() {
-        System.out.println(customer + " added item to cart");
+        System.out.println(customer + " added product to cart");
     }
 }
 
 public class OnlineShoppingCart {
     public static void main(String[] args) {
-        String products[] = {"Laptop", "Shirt", "Phone"};
-
-        for (String p : products) {
-            System.out.println(p);
-        }
-
-        String search = "Phone";
-        for (String p : products) {
-            if (p.equals(search)) {
-                System.out.println(search + " found");
-            }
-        }
-
         Electronics e = new Electronics("Laptop");
         Clothing c = new Clothing("Shirt");
 
         e.applyDiscount();
         c.applyDiscount();
-        e.shipProduct();
 
-        Product.Review r = e.new Review();
+        e.shipProduct();
+        c.shipProduct();
+
+        String products[] = {"Laptop", "Shirt", "Phone"};
+        String search = "Shirt";
+
+        for (int i = 0; i < products.length; i++) {
+            if (products[i].equals(search)) {
+                System.out.println(search + " found");
+            }
+        }
+
+        Review r = new Review();
         r.showReview();
 
-        new CartThread("Customer1").start();
-        new CartThread("Customer2").start();
+        CartThread t1 = new CartThread("Customer1");
+        CartThread t2 = new CartThread("Customer2");
+
+        t1.start();
+        t2.start();
     }
 }
 ================================================================================
@@ -282,12 +304,6 @@ class Person {
     void getDetails() {
         System.out.println("Person: " + name);
     }
-
-    class Appointment {
-        void book() {
-            System.out.println("Appointment booked for " + name);
-        }
-    }
 }
 
 class Doctor extends Person implements Billable {
@@ -295,7 +311,6 @@ class Doctor extends Person implements Billable {
         super(name);
     }
 
-    @Override
     void getDetails() {
         System.out.println("Doctor: " + name);
     }
@@ -305,54 +320,68 @@ class Doctor extends Person implements Billable {
     }
 }
 
-class Patient extends Person {
+class Patient extends Person implements Billable {
     Patient(String name) {
         super(name);
     }
 
-    @Override
     void getDetails() {
         System.out.println("Patient: " + name);
     }
+
+    public void generateBill() {
+        System.out.println("Patient bill generated");
+    }
 }
 
-class PatientThread extends Thread {
-    String patient;
+class Appointment {
+    void bookAppointment() {
+        System.out.println("Appointment booked");
+    }
+}
 
-    PatientThread(String patient) {
-        this.patient = patient;
+class AppointmentThread extends Thread {
+    String name;
+
+    AppointmentThread(String name) {
+        this.name = name;
     }
 
     public void run() {
-        System.out.println(patient + " booked appointment");
+        System.out.println(name + " booked appointment");
     }
 }
 
 public class HospitalAppointmentSystem {
     public static void main(String[] args) {
-        String records[] = {"Rahul", "Anu", "Tom"};
-        for (String r : records) {
-            System.out.println(r);
-        }
-
-        Doctor d = new Doctor("Dr. Kumar");
-        Patient p = new Patient("Anu");
+        Doctor d = new Doctor("Dr. Ravi");
+        Patient p = new Patient("Arun");
 
         d.getDetails();
         p.getDetails();
+
         d.generateBill();
+        p.generateBill();
 
-        Person.Appointment a = p.new Appointment();
-        a.book();
+        String records[] = {"Arun", "Maya", "Rahul"};
+        for (int i = 0; i < records.length; i++) {
+            System.out.println("Patient record: " + records[i]);
+        }
 
-        new PatientThread("Rahul").start();
-        new PatientThread("Anu").start();
+        Appointment a = new Appointment();
+        a.bookAppointment();
+
+        AppointmentThread t1 = new AppointmentThread("Patient1");
+        AppointmentThread t2 = new AppointmentThread("Patient2");
+
+        t1.start();
+        t2.start();
     }
 }
 ================================================================================
 5. Library Automation
 interface Downloadable {
-    void download();
+    void downloadBook();
 }
 
 class Book {
@@ -363,13 +392,7 @@ class Book {
     }
 
     void getAvailability() {
-        System.out.println("Book available");
-    }
-
-    class Membership {
-        void showMember() {
-            System.out.println("Membership active for " + title);
-        }
+        System.out.println("Book availability");
     }
 }
 
@@ -378,24 +401,32 @@ class DigitalBook extends Book implements Downloadable {
         super(title);
     }
 
-    @Override
     void getAvailability() {
-        System.out.println("Digital book available online");
+        System.out.println("Digital book is available");
     }
 
-    public void download() {
-        System.out.println("Book downloaded");
+    public void downloadBook() {
+        System.out.println("Digital book downloaded");
     }
 }
 
-class PrintedBook extends Book {
+class PrintedBook extends Book implements Downloadable {
     PrintedBook(String title) {
         super(title);
     }
 
-    @Override
     void getAvailability() {
-        System.out.println("Printed book available in library");
+        System.out.println("Printed book is available");
+    }
+
+    public void downloadBook() {
+        System.out.println("Printed book cannot really download, but method used");
+    }
+}
+
+class Membership {
+    void showMembership() {
+        System.out.println("Library membership active");
     }
 }
 
@@ -413,23 +444,32 @@ class IssueThread extends Thread {
 
 public class LibraryAutomation {
     public static void main(String[] args) {
-        String titles[] = {"Java", "DBMS", "OS"};
-        for (String t : titles) {
-            System.out.println(t);
-        }
-
-        DigitalBook d = new DigitalBook("Java");
-        PrintedBook p = new PrintedBook("DBMS");
+        DigitalBook d = new DigitalBook("Java Basics");
+        PrintedBook p = new PrintedBook("C Programming");
 
         d.getAvailability();
         p.getAvailability();
-        d.download();
 
-        Book.Membership m = d.new Membership();
-        m.showMember();
+        d.downloadBook();
+        p.downloadBook();
 
-        new IssueThread("User1").start();
-        new IssueThread("User2").start();
+        String books[] = {"Java Basics", "C Programming", "Python"};
+        String search = "Python";
+
+        for (int i = 0; i < books.length; i++) {
+            if (books[i].equals(search)) {
+                System.out.println(search + " found");
+            }
+        }
+
+        Membership m = new Membership();
+        m.showMembership();
+
+        IssueThread t1 = new IssueThread("User1");
+        IssueThread t2 = new IssueThread("User2");
+
+        t1.start();
+        t2.start();
     }
 }
 ================================================================================
@@ -439,31 +479,24 @@ interface Cancellable {
 }
 
 class Flight {
-    String name;
+    String passengerName;
 
-    Flight(String name) {
-        this.name = name;
+    Flight(String passengerName) {
+        this.passengerName = passengerName;
     }
 
     void calculateFare() {
         System.out.println("Flight fare");
     }
-
-    static class Crew {
-        void showCrew() {
-            System.out.println("Crew members available");
-        }
-    }
 }
 
 class DomesticFlight extends Flight implements Cancellable {
-    DomesticFlight(String name) {
-        super(name);
+    DomesticFlight(String passengerName) {
+        super(passengerName);
     }
 
-    @Override
     void calculateFare() {
-        System.out.println("Domestic fare = 3000");
+        System.out.println("Domestic flight fare = 3000");
     }
 
     public void cancelTicket() {
@@ -471,14 +504,23 @@ class DomesticFlight extends Flight implements Cancellable {
     }
 }
 
-class InternationalFlight extends Flight {
-    InternationalFlight(String name) {
-        super(name);
+class InternationalFlight extends Flight implements Cancellable {
+    InternationalFlight(String passengerName) {
+        super(passengerName);
     }
 
-    @Override
     void calculateFare() {
-        System.out.println("International fare = 15000");
+        System.out.println("International flight fare = 10000");
+    }
+
+    public void cancelTicket() {
+        System.out.println("International ticket cancelled");
+    }
+}
+
+class Crew {
+    void showCrew() {
+        System.out.println("Crew details shown");
     }
 }
 
@@ -490,26 +532,34 @@ class FlightThread extends Thread {
     }
 
     public void run() {
-        System.out.println(passenger + " booked flight ticket");
+        System.out.println(passenger + " booked flight");
     }
 }
 
 public class AirlineReservationSystem {
     public static void main(String[] args) {
-        String passengers[] = {"Ali", "John", "Rani"};
-
-        DomesticFlight d = new DomesticFlight("Indigo");
-        InternationalFlight i = new InternationalFlight("Emirates");
+        DomesticFlight d = new DomesticFlight("Arun");
+        InternationalFlight i = new InternationalFlight("Rahul");
 
         d.calculateFare();
         i.calculateFare();
-        d.cancelTicket();
 
-        Flight.Crew c = new Flight.Crew();
+        d.cancelTicket();
+        i.cancelTicket();
+
+        String passengers[] = {"Arun", "Rahul", "Maya"};
+        for (int j = 0; j < passengers.length; j++) {
+            System.out.println(passengers[j]);
+        }
+
+        Crew c = new Crew();
         c.showCrew();
 
-        new FlightThread("Ali").start();
-        new FlightThread("John").start();
+        FlightThread t1 = new FlightThread("Passenger1");
+        FlightThread t2 = new FlightThread("Passenger2");
+
+        t1.start();
+        t2.start();
     }
 }
 ================================================================================
@@ -528,12 +578,6 @@ class Seat {
     void getPrice() {
         System.out.println("Seat price");
     }
-
-    class SnackOrder {
-        void orderSnack() {
-            System.out.println("Snack ordered for seat " + seatNo);
-        }
-    }
 }
 
 class RegularSeat extends Seat implements Refundable {
@@ -541,24 +585,32 @@ class RegularSeat extends Seat implements Refundable {
         super(seatNo);
     }
 
-    @Override
     void getPrice() {
-        System.out.println("Regular seat = 150");
+        System.out.println("Regular seat price = 150");
     }
 
     public void refund() {
-        System.out.println("Refund done");
+        System.out.println("Regular seat refund done");
     }
 }
 
-class VIPSeat extends Seat {
+class VIPSeat extends Seat implements Refundable {
     VIPSeat(String seatNo) {
         super(seatNo);
     }
 
-    @Override
     void getPrice() {
-        System.out.println("VIP seat = 300");
+        System.out.println("VIP seat price = 300");
+    }
+
+    public void refund() {
+        System.out.println("VIP seat refund done");
+    }
+}
+
+class SnackOrder {
+    void orderSnack() {
+        System.out.println("Snack ordered");
     }
 }
 
@@ -570,34 +622,40 @@ class SeatThread extends Thread {
     }
 
     public void run() {
-        System.out.println(user + " booked a seat");
+        System.out.println(user + " booked seat");
     }
 }
 
 public class CinemaTicketBooking {
     public static void main(String[] args) {
-        String seats[] = {"A1", "A2", "B1"};
-
         RegularSeat r = new RegularSeat("A1");
-        VIPSeat v = new VIPSeat("B1");
+        VIPSeat v = new VIPSeat("V1");
 
         r.getPrice();
         v.getPrice();
-        r.refund();
 
-        Seat.SnackOrder s = r.new SnackOrder();
+        r.refund();
+        v.refund();
+
+        String seats[] = {"A1", "A2", "V1"};
+        String search = "V1";
+
+        for (int i = 0; i < seats.length; i++) {
+            if (seats[i].equals(search)) {
+                System.out.println(search + " found");
+            }
+        }
+
+        SnackOrder s = new SnackOrder();
         s.orderSnack();
 
-        new SeatThread("User1").start();
-        new SeatThread("User2").start();
+        SeatThread t1 = new SeatThread("User1");
+        SeatThread t2 = new SeatThread("User2");
+
+        t1.start();
+        t2.start();
     }
 }
-
-
-
-
-
-
 
 
 
