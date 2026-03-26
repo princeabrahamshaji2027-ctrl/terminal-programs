@@ -1,0 +1,239 @@
+1-activitymain.xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/etName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Student Name"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="20dp"/>
+
+    <EditText
+        android:id="@+id/etRoll"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Roll Number"
+        app:layout_constraintTop_toBottomOf="@id/etName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="20dp"/>
+
+    <Button
+        android:id="@+id/btnNext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Next"
+        app:layout_constraintTop_toBottomOf="@id/etRoll"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+2.activity2.xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/m1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Subject 1"
+        android:inputType="number"
+        android:layout_margin="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <EditText
+        android:id="@+id/m2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Subject 2"
+        android:inputType="number"
+        android:layout_margin="20dp"
+        app:layout_constraintTop_toBottomOf="@id/m1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <EditText
+        android:id="@+id/m3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Subject 3"
+        android:inputType="number"
+        android:layout_margin="20dp"
+        app:layout_constraintTop_toBottomOf="@id/m2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <Button
+        android:id="@+id/btnCalc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Calculate"
+        app:layout_constraintTop_toBottomOf="@id/m3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+3.activity3
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+4.MainActivity.java
+package com.example.myapplication;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+    EditText etName, etRoll;
+    Button btnNext;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        etName = findViewById(R.id.etName);
+        etRoll = findViewById(R.id.etRoll);
+        btnNext = findViewById(R.id.btnNext);
+
+        btnNext.setOnClickListener(v -> {
+            String name = etName.getText().toString();
+            String roll = etRoll.getText().toString();
+
+            Intent intent = new Intent(MainActivity.this, Activity2.class);
+            intent.putExtra("name", name);
+            intent.putExtra("roll", roll);
+            startActivity(intent);
+        });
+    }
+}
+
+5.Activity2.java
+package com.example.myapplication;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class Activity2 extends AppCompatActivity {
+
+    EditText m1, m2, m3;
+    Button btnCalc;
+
+    String name, roll;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_2);
+
+        m1 = findViewById(R.id.m1);
+        m2 = findViewById(R.id.m2);
+        m3 = findViewById(R.id.m3);
+        btnCalc = findViewById(R.id.btnCalc);
+
+        Intent intent = getIntent();
+        name = intent.getStringExtra("name");
+        roll = intent.getStringExtra("roll");
+
+        btnCalc.setOnClickListener(v -> {
+
+            String s1 = m1.getText().toString().trim();
+            String s2 = m2.getText().toString().trim();
+            String s3 = m3.getText().toString().trim();
+
+            if (s1.isEmpty() || s2.isEmpty() || s3.isEmpty()) {
+                m1.setError("Enter marks");
+                m2.setError("Enter marks");
+                m3.setError("Enter marks");
+                return;
+            }
+
+            int mark1 = Integer.parseInt(s1);
+            int mark2 = Integer.parseInt(s2);
+            int mark3 = Integer.parseInt(s3);
+
+            int total = mark1 + mark2 + mark3;
+            double average = total / 3.0;
+
+            Intent i = new Intent(Activity2.this, Activity3.class);
+            i.putExtra("name", name);
+            i.putExtra("roll", roll);
+            i.putExtra("total", total);
+            i.putExtra("average", average);
+
+            startActivity(i);
+        });
+    }
+}
+
+6.Activity3.java
+package com.example.myapplication;
+
+import android.os.Bundle;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class Activity3 extends AppCompatActivity {
+
+    TextView result;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_3);
+
+        result = findViewById(R.id.result);
+
+        String name = getIntent().getStringExtra("name");
+        String roll = getIntent().getStringExtra("roll");
+        int total = getIntent().getIntExtra("total", 0);
+        double avg = getIntent().getDoubleExtra("average", 0);
+
+        result.setText(
+                "Name: " + name +
+                        "\nRoll No: " + roll +
+                        "\nTotal: " + total +
+                        "\nAverage: " + avg
+        );
+    }
+}
