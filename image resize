@@ -1,0 +1,85 @@
+1-xnl
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:padding="20dp"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:src="@drawable/img"
+        android:scaleType="fitCenter"/>
+
+    <Button
+        android:id="@+id/moveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Move Image"
+        android:layout_marginTop="30dp"/>
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="30dp"
+        android:scaleType="fitCenter"/>
+
+</LinearLayout>
+2-java
+package com.example.myapplication;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+    ImageView imageView1, imageView2;
+    Button moveButton;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        imageView1 = findViewById(R.id.imageView1);
+        imageView2 = findViewById(R.id.imageView2);
+        moveButton = findViewById(R.id.moveButton);
+
+        moveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Bitmap original =
+                        BitmapFactory.decodeResource(
+                                getResources(),
+                                R.drawable.img);
+
+                Bitmap resizedImage =
+                        Bitmap.createScaledBitmap(
+                                original,
+                                100,
+                                100,
+                                true);
+
+                imageView2.setImageBitmap(resizedImage);
+
+                imageView1.setImageDrawable(null);
+            }
+        });
+
+    }
+}
