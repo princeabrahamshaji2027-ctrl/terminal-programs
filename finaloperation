@@ -1,11 +1,11 @@
 ---------------------------------------------------------------------------------------------------------------------------------------------
 1-ANDROID:
-curl http://raw.githubusercontent.com/princeabrahamshaji2027-ctrl/terminal-programs/refs/heads/master/android
+curl.exe http://raw.githubusercontent.com/princeabrahamshaji2027-ctrl/terminal-programs/refs/heads/master/android
 ----------------------------------------------------------------------------------------------------------------------------------------------
 2-ADBMS
-curl https://raw.githubusercontent.com/princeabrahamshaji2027-ctrl/terminal-programs/refs/heads/master/ADBMS
+curl.exe https://raw.githubusercontent.com/princeabrahamshaji2027-ctrl/terminal-programs/refs/heads/master/ADBMS
 ----------------------------------------------------------------------------------------------------------------------------------------------
 3-JAVA
-curl https://raw.githubusercontent.com/princeabrahamshaji2027-ctrl/terminal-programs/refs/heads/master/JAVA%20part%201
-curl https://raw.githubusercontent.com/princeabrahamshaji2027-ctrl/terminal-programs/refs/heads/master/JAVA%20part%202
+curl.exe https://raw.githubusercontent.com/princeabrahamshaji2027-ctrl/terminal-programs/refs/heads/master/JAVA%20part%201
+curl.exe https://raw.githubusercontent.com/princeabrahamshaji2027-ctrl/terminal-programs/refs/heads/master/JAVA%20part%202
 ----------------------------------------------------------------------------------------------------------------------------------------------
