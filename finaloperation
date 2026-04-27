@@ -1,6 +1,6 @@
 ---------------------------------------------------------------------------------------------------------------------------------------------
 1-ANDROID:
-curl https://raw.githubusercontent.com/princeabrahamshaji2027-ctrl/terminal-programs/refs/heads/master/calculator
+curl http://raw.githubusercontent.com/princeabrahamshaji2027-ctrl/terminal-programs/refs/heads/master/android
 ----------------------------------------------------------------------------------------------------------------------------------------------
 2-ADBMS
 curl https://raw.githubusercontent.com/princeabrahamshaji2027-ctrl/terminal-programs/refs/heads/master/ADBMS
