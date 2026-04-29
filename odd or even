@@ -1,0 +1,100 @@
+1-xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".MainActivity"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="226dp"
+        android:layout_height="39dp"
+        android:gravity="center"
+        android:layout_marginTop="30dp"
+        android:textColor="@color/red"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:text="EVEN OR ODD CHECKER" />
+
+    <EditText
+        android:id="@+id/edt"
+        android:layout_width="314dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
+        android:hint="Enter a number"
+        android:textColorHint="@color/black"/>
+
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:padding="15dp"
+        android:text="Check"
+        android:id="@+id/btn"/>
+
+    <TextView
+        android:id="@+id/res"
+        android:layout_width="226dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="45dp"
+        android:gravity="center"
+        android:hint="Result"
+        android:textColorHint="@color/blue" />
+
+</LinearLayout>
+
+2-java
+package com.example.evenandodd;
+
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+import org.w3c.dom.Text;
+
+public class MainActivity extends AppCompatActivity {
+
+    EditText edt;
+    Button btn;
+    TextView txt;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_main);
+        edt = (EditText) findViewById(R.id.edt);
+        btn = (Button) findViewById(R.id.btn);
+
+        txt = (TextView) findViewById(R.id.res);
+
+        btn.setOnClickListener(v -> {
+            check(edt, txt);
+        });
+    }
+
+        private void check(EditText edt,TextView r)
+        {
+            String num=edt.getText().toString();
+            int n=Integer.parseInt(num);
+            if(n%2==0)
+                r.setText("Even number");
+            else
+                r.setText("Odd number");
+
+        }
+    }
