@@ -1,137 +1,154 @@
-1-activitymain.xml
+1.1-xml1
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp">
+    android:orientation="vertical"
+    tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Factorial Calculator"
-        android:textSize="26sp"
-        android:textStyle="bold"
-        android:textColor="@android:color/black"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:layout_width="257dp"
+        android:layout_height="45dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:text="FACTORIAL FINDER"
+        android:textColor="@color/blue"
+        android:textSize="20dp"
+        android:textAlignment="center"/>
 
     <EditText
         android:id="@+id/num"
-        android:layout_width="0dp"
+        android:layout_width="302dp"
         android:layout_height="wrap_content"
-        android:hint="Enter value"
-        android:inputType="number"
-        android:background="@android:drawable/edit_text"
-        android:padding="14dp"
-        app:layout_constraintTop_toBottomOf="@id/title"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="32dp"/>
+        android:layout_marginTop="25dp"
+        android:hint="Enter a number"
+        android:textColorHint="@color/black" />
 
     <Button
-        android:id="@+id/fact"
-        android:layout_width="0dp"
+        android:id="@+id/btn"
+        android:layout_width="259dp"
+        android:layout_height="76dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="30dp"
+        android:text="Find Factorial"
+        android:textSize="20dp"/>
+
+
+</LinearLayout>
+1.2-xml2
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ResultActivity">
+
+
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="FIND FACTORIAL"
-        android:textAllCaps="true"
-        app:layout_constraintTop_toBottomOf="@id/num"
-        app:layout_constraintStart_toStartOf="@id/num"
-        app:layout_constraintEnd_toEndOf="@id/num"
+        android:text="Factorial is"
+        android:textSize="20dp"
         android:layout_marginTop="20dp"/>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/resultCard"
-        android:layout_width="0dp"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:cardElevation="6dp"
-        app:cardCornerRadius="12dp"
-        app:layout_constraintTop_toBottomOf="@id/fact"
-        app:layout_constraintStart_toStartOf="@id/num"
-        app:layout_constraintEnd_toEndOf="@id/num"
-        android:layout_marginTop="28dp">
+        android:textSize="30dp"
+        android:id="@+id/txt"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="20dp"/>
 
-        <TextView
-            android:id="@+id/result"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Your result appears here"
-            android:textSize="18sp"
-            android:padding="20dp"
-            android:textColor="@android:color/black"/>
+</LinearLayout>
 
-    </androidx.cardview.widget.CardView>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
-
-2-MainActivity.java
+2.1-Java1
 package com.example.factorial;
 
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import java.math.BigInteger;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
 
-    private EditText inputNumber;
-    private Button calculateButton;
-    private TextView outputView;
+    EditText edt;
+    Button btn;
+    TextView res;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        initializeViews();
-        setupButtonAction();
+        edt = (EditText) findViewById(R.id.num);
+        btn = (Button) findViewById(R.id.btn);
+        res=(TextView) findViewById(R.id.res);
+
+
+        btn.setOnClickListener(v -> {
+            find_fact(edt, res);
+        });
     }
 
-    private void initializeViews() {
-        inputNumber = findViewById(R.id.num);
-        calculateButton = findViewById(R.id.fact);
-        outputView = findViewById(R.id.result);
-    }
-
-    private void setupButtonAction() {
-        calculateButton.setOnClickListener(v -> processFactorial());
-    }
-
-    private void processFactorial() {
-        String value = inputNumber.getText().toString().trim();
-
-        if (value.length() == 0) {
-            outputView.setText("Enter a valid number");
-            return;
-        }
-
-        try {
-            int num = Integer.parseInt(value);
-
-            if (num < 0) {
-                outputView.setText("Negative numbers not allowed");
-                return;
+        private void find_fact(EditText edt,TextView res)
+        {
+            String num=edt.getText().toString();
+            int n=Integer.parseInt(num);
+            int fact=1;
+            for(int i=1;i<=n;i++)
+            {
+                fact=fact*i;
             }
-
-            outputView.setText("Result:\n" + computeFactorial(num));
-
-        } catch (NumberFormatException e) {
-            outputView.setText("Invalid input");
+            res.setText("Factorial is:"+fact);
         }
     }
+2.2-Java2
+package com.example.factorial;
 
-    private BigInteger computeFactorial(int n) {
-        BigInteger result = BigInteger.ONE;
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.TextView;
 
-        for (int i = 2; i <= n; i++) {
-            result = result.multiply(BigInteger.valueOf(i));
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+public class ResultActivity extends AppCompatActivity {
+
+    TextView txt;
+    String result="fact_result";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_result);
+
+        txt=(TextView) findViewById(R.id.txt);
+
+        Intent intent=getIntent();
+
+        int res=intent.getIntExtra(result,0);
+
+        txt.setText(String.valueOf(res));
+
         }
 
-        return result;
-    }
 }
